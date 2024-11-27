@@ -1,17 +1,17 @@
-import { useState } from "react"
-import HeatMap from "./assets/components/HeatMap"
+import HeatMapSection from "./assets/components/HeatMapSection"
 
 function App() {
-  // const [taskNames, setTaskNames] = useState<string[]>([])
 
   return (
-    <div className="md:ml-12">
-      <div className="w-full flex justify-center mb-4 border-b-4 border-neutral-400 pb-2 rounded-b-full">
+    <div className="">
+      <div className="w-full flex justify-center mb-4 border-b-1 bg-neutral-800 border-neutral-400 py-2">
         <a href="/">
           <h1 className="text-3xl ">teguh.me</h1>
         </a>
       </div>
-      <HeatMap />
+      <div className="md:ml-12">
+        <HeatMapSection />
+      </div>
     </div>
   )
 }

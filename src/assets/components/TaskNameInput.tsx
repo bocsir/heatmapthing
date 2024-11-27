@@ -1,7 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 
-const TaskNameInput = () => {
-    const [taskName, setTaskName] = useState<string>('example task');
+interface TaskNameInputProps {
+    taskName: string;
+    changeTaskName: (prevName: string, newName: string) => void;
+}
+
+const TaskNameInput = ({taskName, changeTaskName}: TaskNameInputProps) => {
+    const [currentTaskName, setCurrentTaskName] = useState<string>(taskName);
     const [width, setWidth] = useState<number>(0);
     const spanRef = useRef<HTMLSpanElement>(null); //for width calculation
     const inputRef = useRef<HTMLInputElement>(null);
@@ -18,6 +23,11 @@ const TaskNameInput = () => {
         setWidth(newWidth);
     }, [taskName]);
 
+    useEffect(() => {
+        if (currentTaskName !== taskName) {
+            changeTaskName(taskName, currentTaskName);
+        }
+    }, [currentTaskName]); //eslint-disable-line
 
     return (
         <div>
@@ -26,11 +36,11 @@ const TaskNameInput = () => {
             </span>
             <input
                 ref={inputRef}
-                className="pl-2 ml-2 focus:outline-none focus:bg-neutral-700 rounded-t min-w-12 bg-transparent border-b border-neutral-400 text-white text-2xl"
+                className="pl-2 ml-2 focus:outline-none focus:bg-neutral-800 rounded-t min-w-12 bg-transparent border-b border-neutral-400 text-white text-2xl"
                 style={{ width: `${width}px` }}
                 type="text"
-                value={taskName}
-                onChange={(e) => setTaskName(e.target.value)}
+                value={currentTaskName}
+                onChange={(e) => setCurrentTaskName(e.target.value)}
                 onKeyDown={handleKeyDown}
             />
         </div>
