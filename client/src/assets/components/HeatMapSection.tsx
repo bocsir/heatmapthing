@@ -54,7 +54,7 @@ const HeatMapSection = () => {
     }
 
     return (
-      <div className="md:ml-12">
+      <div className="ml-3 md:ml-12">
         <AddTask updateTasksList={handleTaskAdd} />
         {taskNames.map((taskName, idx) => 
           <div key={idx} className="">
