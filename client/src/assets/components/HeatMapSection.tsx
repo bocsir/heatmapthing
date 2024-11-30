@@ -1,14 +1,13 @@
 import { useState } from "react";
 import HeatMap from "./HeatMap";
 import AddTask from "./AddTask";
+import DailyUpdateForm from "./DailyUpdateForm";
 
-// interface Tasks {
-//     [key: string]: {
-//         taskName: string;
-//         isBoolean: boolean;
-//         taskUnit: string | null; // null if isBoolean is true
-//     }
-// }
+export interface Task {
+  taskName: string;
+  isBoolean: boolean;
+  taskUnit: string | null; // null if isBoolean is true
+}
 
 // need array of daily tasks with a value for each day. 
 // index could just be day of year
@@ -19,53 +18,76 @@ import AddTask from "./AddTask";
 const dailyTaskData = [];
 
 for (let i = 0; i < 365; i++) {
-    dailyTaskData.push();
+  dailyTaskData.push();
 }
 
 const HeatMapSection = () => {
-    const [taskNames, setTaskNames] = useState<string[]>(["example task", "another task", "one more task"]);
-    // const [tasks, setTasks] = useState<Tasks>({
-    //     "example task": {
-    //         taskName: "example task",
-    //         isBoolean: false,
-    //         taskUnit: "hours"
-    //     },
-    //     "another task": {
-    //         taskName: "another task",
-    //         isBoolean: true,
-    //         taskUnit: null
-    //     },
-    //     "one more task": {
-    //         taskName: "one more task",
-    //         isBoolean: false,
-    //         taskUnit: "hours"
-    //     }
-    // });
-
-    const handleTaskNameChange = (prevName: string, newName: string) => {
-      const newTaskNames = [...taskNames];
-      const idx = taskNames.indexOf(prevName);
-      newTaskNames[idx] = newName;
-      setTaskNames(newTaskNames);
+  const [tasks, setTasks] = useState<Task[]>([
+    {
+      taskName: "example task",
+      isBoolean: false,
+      taskUnit: "hours"
+    },
+    {
+      taskName: "another task",
+      isBoolean: true,
+      taskUnit: null
+    },
+    {
+      taskName: "one more task",
+      isBoolean: false,
+      taskUnit: "hours"
     }
+  ]);
 
-    const handleTaskAdd = (taskName: string) => {
-        setTaskNames([...taskNames, taskName]);
+  const exampleDailyValues: { taskName: string, values: (number | boolean)[] }[] = [
+    { taskName: "example task", values: [1] },
+    { taskName: "another task", values: [true] },
+    { taskName: "one more task", values: [1] },
+  ]
+
+const fillDailyValues = (isBool: boolean): (number | boolean)[] => {
+  const dailyValues = [];
+
+  for (let i = 0; i < 365; i++) {
+    if (isBool) {
+      dailyValues.push(i % 2 === 0);
+    } else {
+      dailyValues.push(Math.floor(Math.random() * 9));
     }
+  }
 
-    return (
-      <div className="ml-3 md:ml-12">
+  return dailyValues;
+};
+
+
+  exampleDailyValues[0].values = fillDailyValues(false);
+  exampleDailyValues[1].values = fillDailyValues(true);
+  exampleDailyValues[2].values = fillDailyValues(false);
+
+  const handleTaskNameChange = (prevName: string, newName: string) => {
+    const newTasks = tasks.map(task =>
+      task.taskName === prevName ? { ...task, taskName: newName } : task
+    );
+    setTasks(newTasks);
+  }
+
+  const handleTaskAdd = (taskName: string) => {
+    setTasks([...tasks, { taskName, isBoolean: false, taskUnit: "hours" }]);
+  }
+
+  return (
+    <div className="">
+      <div className="flex gap-6">
+        <DailyUpdateForm tasks={tasks} />
         <AddTask updateTasksList={handleTaskAdd} />
-        {taskNames.map((taskName, idx) => 
-          <div key={idx} className="">
-            <HeatMap taskName={taskName} changeTaskName={handleTaskNameChange}/>
-          </div>)}
       </div>
-    )
+      {tasks.map((task, idx) =>
+        <div key={idx} className="">
+          <HeatMap taskName={task.taskName} changeTaskName={handleTaskNameChange} dailyValues={exampleDailyValues[exampleDailyValues.findIndex(value => value.taskName === task.taskName)]} />
+        </div>)}
+    </div>
+  )
 }
 
 export default HeatMapSection;
-
-
-
-//need to automatically import react in tsconfig.json file

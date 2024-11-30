@@ -9,7 +9,7 @@ function App() {
           <h1 className="text-3xl ">teguh.me</h1>
         </a>
       </div>
-      <div className="md:ml-12">
+      <div className="ml-3 pl-3 md:pl-0 md:ml-12">
         <HeatMapSection />
       </div>
     </div>
