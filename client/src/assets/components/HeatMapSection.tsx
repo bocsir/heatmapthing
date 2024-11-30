@@ -1,7 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeatMap from "./HeatMap";
 import AddTask from "./AddTask";
 import DailyUpdateForm from "./DailyUpdateForm";
+
+//temporary function to be replaced with real data from db
+const fillDailyValues = (isBool: boolean): (number | boolean)[] => {
+  console.log("filling daily values");
+  const dailyValues = [];
+
+  for (let i = 0; i < 365; i++) {
+    if (isBool) {
+      dailyValues.push(i % 2 === 0);
+    } else {
+      dailyValues.push(Math.floor(Math.random() * 9));
+    }
+  }
+  return dailyValues;
+};
 
 export interface Task {
   taskName: string;
@@ -9,16 +24,9 @@ export interface Task {
   taskUnit: string | null; // null if isBoolean is true
 }
 
-// need array of daily tasks with a value for each day. 
-// index could just be day of year
-// only data needed from task is the days value with deffault of 0
-// value is either a number or a boolean
-// could call it dailyTaskData
-
-const dailyTaskData = [];
-
-for (let i = 0; i < 365; i++) {
-  dailyTaskData.push();
+export interface DailyValues {
+  taskName: string;
+  values: (number | boolean)[]; // length of 365
 }
 
 const HeatMapSection = () => {
@@ -39,31 +47,36 @@ const HeatMapSection = () => {
       taskUnit: "hours"
     }
   ]);
-
-  const exampleDailyValues: { taskName: string, values: (number | boolean)[] }[] = [
+  const [dailyValues, setDailyValues] = useState<DailyValues[]>([
     { taskName: "example task", values: [1] },
     { taskName: "another task", values: [true] },
     { taskName: "one more task", values: [1] },
-  ]
+  ]);
 
-const fillDailyValues = (isBool: boolean): (number | boolean)[] => {
-  const dailyValues = [];
+  useEffect(() => {
+    const newDailyValues = tasks.map((task) => {
+      return {
+        taskName: task.taskName,
+        values: fillDailyValues(task.isBoolean)
+      }
+    });
+    setDailyValues(newDailyValues);
+  }, []);
+  
+  useEffect(() => {
+    console.log(tasks);
+    const newDailyValues = tasks.map((task) => {
+      return {
+        taskName: task.taskName,
+        values: fillDailyValues(task.isBoolean),
+      }
+    });
+    setDailyValues(newDailyValues);
+  }, [tasks]);
 
-  for (let i = 0; i < 365; i++) {
-    if (isBool) {
-      dailyValues.push(i % 2 === 0);
-    } else {
-      dailyValues.push(Math.floor(Math.random() * 9));
-    }
-  }
-
-  return dailyValues;
-};
-
-
-  exampleDailyValues[0].values = fillDailyValues(false);
-  exampleDailyValues[1].values = fillDailyValues(true);
-  exampleDailyValues[2].values = fillDailyValues(false);
+  useEffect(() => {
+    console.log(dailyValues);
+  }, [dailyValues]);
 
   const handleTaskNameChange = (prevName: string, newName: string) => {
     const newTasks = tasks.map(task =>
@@ -72,8 +85,9 @@ const fillDailyValues = (isBool: boolean): (number | boolean)[] => {
     setTasks(newTasks);
   }
 
-  const handleTaskAdd = (taskName: string) => {
-    setTasks([...tasks, { taskName, isBoolean: false, taskUnit: "hours" }]);
+  const handleTaskAdd = (taskName: string, isBool: boolean, taskUnit: string) => {
+    // console.log(taskName);
+    setTasks([...tasks, { taskName, isBoolean: isBool, taskUnit: taskUnit }]);
   }
 
   return (
@@ -84,7 +98,7 @@ const fillDailyValues = (isBool: boolean): (number | boolean)[] => {
       </div>
       {tasks.map((task, idx) =>
         <div key={idx} className="">
-          <HeatMap taskName={task.taskName} changeTaskName={handleTaskNameChange} dailyValues={exampleDailyValues[exampleDailyValues.findIndex(value => value.taskName === task.taskName)]} />
+          <HeatMap taskName={task.taskName} changeTaskName={handleTaskNameChange} dailyValues={dailyValues[idx]} />
         </div>)}
     </div>
   )

@@ -1,6 +1,4 @@
-import { useState } from "react";
 import TaskNameInput from "./TaskNameInput";
-// import { getDaysInYear, getMonthLabels, getDayLabels } from "../utils/dateUtils";
 import { getDaysInYear } from "../utils/dateUtils";
 
 interface HeatMapProps {
@@ -14,22 +12,29 @@ interface Day {
 }
 
 // will need to go through dailyValues and divide it by the max number, * 10, round to whole number
-const maxValue = 23;
+// const maxValue = 23;
 
 const colorMap: { [key: number]: string } = {
-    1: "bg-amber-100",
-    2: "bg-amber-200",
-    3: "bg-amber-300",
-    4: "bg-amber-400",
-    5: "bg-amber-500",
-    6: "bg-amber-600",
-    7: "bg-amber-900",
-    8: "bg-amber-900",
-    9: "bg-pink-500",
+    0: "bg-indigo-50",
+    1: "bg-indigo-100",
+    2: "bg-indigo-200",
+    3: "bg-indigo-300",
+    4: "bg-indigo-400",
+    5: "bg-indigo-500",
+    6: "bg-indigo-600",
+    7: "bg-indigo-700",
+    8: "bg-indigo-800",
+    9: "bg-indigo-900",
   };
 
 const HeatMap = (props: HeatMapProps) => {
-    const [dailyValues, setdailyValues] = useState<(number | boolean)[]>(props.dailyValues.values);
+    let dailyValues: (number | boolean)[];
+    const { dailyValues: { values = [] } = { values: [] } } = props; 
+    if (values.length === 0) {
+        dailyValues = new Array(365).fill(false);
+    } else {
+        dailyValues = values;
+    }
     const daysInYear: Day[] = getDaysInYear();
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -45,14 +50,15 @@ const HeatMap = (props: HeatMapProps) => {
                     </div>
                     <div className="grid grid-rows-7 grid-flow-col gap-1">
                         {daysInYear.map((day, index) => (
-                            <div key={index}>
+                            <div key={index} className="">
                                 <div
                                     className={`w-4 h-4 relative rounded-sm group 
                                         ${(typeof dailyValues[0] === 'boolean') ? (
                                             (dailyValues[index] ? "bg-green-600" : "bg-neutral-400")
                                         ) : (
-                                            // bg-violet-${typeof dailyValues[index] === 'number' ? dailyValues[index] * 100 : 0}
-                                            ((typeof dailyValues[index] === 'number') && (dailyValues[index] > 0) ? `${colorMap[dailyValues[index]]}` : "bg-neutral-400")
+                                            ((typeof dailyValues[index] === 'number') ? 
+                                            `${colorMap[dailyValues[index]]}` :
+                                            "")
                                         )}
                                     `}
                                 >

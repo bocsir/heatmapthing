@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 interface AddTaskProps {
-    updateTasksList: (newTaskName: string) => void;
+    updateTasksList: (newTaskName: string, isBool: boolean, unit: string) => void;
 }
 
 const AddTask = ({ updateTasksList }: AddTaskProps) => {
@@ -16,7 +16,10 @@ const AddTask = ({ updateTasksList }: AddTaskProps) => {
                 className="flex flex-col gap-3"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    updateTasksList(newTaskName)
+                    updateTasksList(newTaskName, newTaskIsBool, newTaskUnit);
+                    setNewTaskName("");
+                    setnewTaskIsBool(false);
+                    setNewTaskUnit("");
                 }}>
                 <div className="flex items-center h-[24px] gap-3">
                     <label className="text-lg">name:</label>
