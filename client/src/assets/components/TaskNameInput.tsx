@@ -36,7 +36,7 @@ const TaskNameInput = ({taskName, changeTaskName}: TaskNameInputProps) => {
             </span>
             <input
                 ref={inputRef}
-                className="pl-2 ml-2 focus:outline-none focus:bg-neutral-800 rounded-t min-w-12 bg-transparent border-b border-neutral-400 text-white text-2xl"
+                className="focus:outline-none focus:bg-neutral-800 rounded-t min-w-12 bg-transparent border-b border-neutral-400 text-white text-2xl"
                 style={{ width: `${width}px` }}
                 type="text"
                 value={currentTaskName}

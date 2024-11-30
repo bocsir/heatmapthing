@@ -13,11 +13,17 @@ interface Day {
 
 const HeatMap = (props: HeatMapProps) => {
     const daysInYear: Day[] = getDaysInYear();
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     return (
-        <div className="mt-6">
+        <div className="mt-6 w-fit max-w-[900px] overflow-x-auto">
             <TaskNameInput {...props} />
-            <div className="grid grid-rows-7 grid-flow-col gap-1 max-w-[900px] overflow-x-auto pr-6 pl-3 py-8">
+            <div className="flex w-full justify-between pr-[55px] mt-2">
+                {months.map((month, idx) => 
+                   <p key={idx}>{month}</p>
+            )}
+            </div>
+            <div className="grid grid-rows-7 grid-flow-col gap-1 pt-1 overflow-y-hidden">
                 {daysInYear.map((day, index) => (
                     <div key={index}>
                         <div
