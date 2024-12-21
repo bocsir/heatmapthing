@@ -62,9 +62,11 @@ const HeatMap = (props: HeatMapProps) => {
                                         )}
                                     `}
                                 >
-                                    <span className={`absolute z-10 bottom-full mb-1 hidden group-hover:flex bg-violet-600 font-extrabold rounded-sm px-1 w-24 ${day.toDateString().toLowerCase().includes('dec') && "-ml-16"}`}>
-                                        {day.toDateString().slice(0, day.toDateString().length - 5)}
-                                    </span>
+                                    <div className={`absolute z-10 bottom-full mb-1 hidden group-hover:flex bg-black border text-neutral-200 font-extrabold rounded-sm w-max px-2 justify-center ${day.toDateString().toLowerCase().includes('dec') && "-ml-28"}`}>
+                                        <p>{`${day.toDateString().slice(0, day.toDateString().length - 5)}`}
+                                            <span className="text-white">{typeof dailyValues[0] !== 'boolean' ? ` : ${dailyValues[index]}` : ''}</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         ))}

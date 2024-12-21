@@ -10,7 +10,7 @@ const AddTask = ({ updateTasksList }: AddTaskProps) => {
     const [newTaskUnit, setNewTaskUnit] = useState<string>("");
 
     return (
-        <div className="my-3 rounded border p-3 pt-1 w-min border-neutral-400">
+        <div className="my-3 rounded-sm border p-3 pt-1 w-min border-neutral-400">
             <h2 className="text-xl font-semibold pb-2">Add a Task</h2>
             <form
                 className="flex flex-col gap-3"

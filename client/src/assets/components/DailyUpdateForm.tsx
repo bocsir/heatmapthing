@@ -10,7 +10,7 @@ const DailyUpdateForm = ({ tasks }: DailyUpdateFormProps) => {
     const [newValue, setNewValue] = useState<string>('');
 
     return (
-        <div className="my-3 rounded border p-3 pt-1 w-fit border-neutral-400">
+        <div className="my-3 rounded-sm border p-3 pt-1 w-fit border-neutral-400">
             <h2 className="text-xl font-semibold pb-2">Daily Update:</h2>
             <form className="flex flex-col gap-3 text-lg">
                 <div className="flex gap-3 items-center h-[24px]">
