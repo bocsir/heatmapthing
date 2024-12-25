@@ -30,6 +30,7 @@ const colorMap: { [key: number]: string } = {
 const HeatMap = (props: HeatMapProps) => {
     let dailyValues: (number | boolean)[];
     const { dailyValues: { values = [] } = { values: [] } } = props; 
+
     if (values.length === 0) {
         dailyValues = new Array(365).fill(false);
     } else {
@@ -52,7 +53,7 @@ const HeatMap = (props: HeatMapProps) => {
                         {daysInYear.map((day, index) => (
                             <div key={index} className="">
                                 <div
-                                    className={`w-4 h-4 relative rounded-sm group 
+                                    className={`w-4 h-4 relative rounded-sm group active:border-2 
                                         ${(typeof dailyValues[0] === 'boolean') ? (
                                             (dailyValues[index] ? "bg-green-600" : "bg-neutral-400")
                                         ) : (
